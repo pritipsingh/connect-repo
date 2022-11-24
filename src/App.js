@@ -1,23 +1,25 @@
 import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
 
 function App() {
+  
+  const [connected, setConnected] = useState();
+  const connectWallet = async () => {
+   const { ethereum } = window;
+    if (!ethereum) {
+      alert("Get MetaMask!");
+      return;
+    }
+    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+    console.log("Connected", accounts[0]);
+    setConnected(accounts[0]);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="body">
+      <button onClick={connectWallet}>{
+       connected ? connected : "Connect Wallet"
+      }</button>
     </div>
   );
 }
